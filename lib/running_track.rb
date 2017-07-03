@@ -12,11 +12,15 @@ module RunningTrack
   end
 
   def self.all
-    Base.get_tracks_data
+    Base.tracks_data
   end
 
   def self.find_by(property, value)
     Base.fetch_data unless Base.cache[:all_tracks]
     Track.find(property, value).map(&:to_a)
+  end
+
+  def self.find_random(number)
+    Track.find_random(number)
   end
 end

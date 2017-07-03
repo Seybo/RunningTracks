@@ -2,7 +2,7 @@ module RunningTrack
   class Base
     @cache = {}
 
-    def self.get_tracks_data
+    def self.tracks_data
       @cache[:all_tracks] ||= fetch_data
     end
 
@@ -10,8 +10,8 @@ module RunningTrack
       Track.update_tracks(Data.import).map(&:to_a)
     end
 
-    def self.cache
-      @cache
+    class << self
+      attr_reader :cache
     end
   end
 end

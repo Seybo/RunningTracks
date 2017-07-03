@@ -36,6 +36,11 @@ module RunningTrack
       @tracks_list.select { |track| track.send(property) == value }
     end
 
+    def self.find_random(number)
+      return [] if number > @tracks_list.size || number < 1
+      @tracks_list.sample(number)
+    end
+
     def to_a
       [@district, @address, @phone, @has_wifi]
     end
