@@ -38,6 +38,15 @@ module RunningTrack
       [@district, @address, @phone, @has_wifi]
     end
 
+    def to_h
+      {
+        district: district,
+        address: address,
+        phone: phone,
+        has_wifi: has_wifi
+      }
+    end
+
     def to_s
       "District: #{@disctrict}.
        Addres: #{@address}.
@@ -56,6 +65,12 @@ module RunningTrack
           has_wifi = row['Cells']['HasWifi']
 
           Track.new(district, address, phone, has_wifi)
+        end
+      end
+
+      def import_tracks(tracks)
+        tracks.each do |track|
+          Track.new(track[:district], track[:address], track[:phone], track[:has_wifi])
         end
       end
 

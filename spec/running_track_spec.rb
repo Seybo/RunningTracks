@@ -4,7 +4,7 @@ RSpec.describe RunningTrack do # rubocop:disable Metrics/BlockLength
   let(:base_class) { RunningTrack::Base }
 
   before(:each) do
-    RunningTrack::Track.instance_variable_set(:@tracks_list, [])
+    described_class::Track.instance_variable_set(:@tracks_list, [])
     base_class.cache[:all_tracks] = [%w[a b c d], %w[e f g h]]
   end
 
@@ -17,45 +17,47 @@ RSpec.describe RunningTrack do # rubocop:disable Metrics/BlockLength
 
   it 'fetches all tracks data into cache' do
     base_class.cache[:all_tracks] = nil
-    subject.all
+    described_class.all
     expect(base_class.cache[:all_tracks]).to be_kind_of(Array)
   end
 
   it 'takes all tracks data from cache' do
     expect(base_class).to_not receive(:fetch_data)
-    subject.all
+    described_class.all
   end
 
   it 'searches data in cache' do
     build_tracks
     expect(base_class).to_not receive(:fetch_data)
 
-    expect(subject.find_by('district', 'e')).to eq([%w[e e1 1 yes],
-                                                    %w[e e2 1 yes]])
+    expect(described_class.find_by('district', 'e')).to eq([%w[e e1 1 yes],
+                                                            %w[e e2 1 yes]])
   end
 
   it 'fetches data before search' do
     base_class.cache[:all_tracks] = nil
 
-    expect(subject.find_by('district', 'район Крюково').size).to be > 0
+    expect(described_class.find_by('district', 'район Крюково').size).to be > 0
   end
 
   it 'returns random tracks' do
     build_tracks
-    expect(subject.find_random(2).size).to eq(2)
-    expect(subject.find_random(200).size).to eq(0)
+    expect(described_class.find_random(2).size).to eq(2)
+    expect(described_class.find_random(5).size).to eq(0)
   end
 
   it 'prints data' do
     # you should see it with your eyes
-    subject.print(base_class.cache[:all_tracks])
+    described_class.print(base_class.cache[:all_tracks])
   end
 
   it 'saves and reads tracks data to/from YAML' do
     build_tracks
-    subject.save(RunningTrack::Track.tracks_list)
-    loaded_tracks = subject.load
-    expect(loaded_tracks.size).to eq 4
-    expect(loaded_tracks[3]).to eq %w[e e2 1 yes]
+    last_track = build(:track, district: '1', address: '2', phone: '3', has_wifi: '4')
+
+    described_class.save(RunningTrack::Track.tracks_list)
+    loaded_tracks = described_class.load
+    expect(loaded_tracks.size).to eq 5
+    expect(loaded_tracks[4]).to eq last_track.to_h
   end
 end
