@@ -7,7 +7,7 @@ module RunningTrack
     end
 
     def self.fetch_data
-      Track.update_tracks(Data.import).map(&:to_a)
+      Track.update_tracks(DataSource.import).map(&:to_a)
     end
 
     class << self
