@@ -1,10 +1,14 @@
 require_relative 'spec_helper.rb'
 
-RSpec.describe RunningTrack::Track do
+RSpec.describe RunningTrack::Track do # rubocop:disable Metrics/BlockLength
   let(:tracks_list) { RunningTrack::Track.instance_variable_get :@tracks_list }
   let(:default_track) { build(:track) }
-  let(:track1) { build(:track, district: 'new district', address: 'new address',
-                               phone: 'new phone', has_wifi: 'no') }
+
+  let(:track1) do
+    build(:track, district: 'new district', address: 'new address',
+                  phone: 'new phone', has_wifi: 'no')
+  end
+
   let(:track2) { build(:track, district: 'new district') }
 
   before(:each) do
@@ -34,5 +38,15 @@ RSpec.describe RunningTrack::Track do
     expect(RunningTrack::Track.find('district', 'District').count).to eq 0
     track2
     expect(RunningTrack::Track.find('district', 'new district').count).to eq 2
+  end
+
+  context 'states' do
+    it 'has default' do
+      expect(default_track.aasm.current_state).to eq :unknown
+    end
+
+    it 'has all' do
+      expect(default_track.aasm.states).to eq %i[unknown good normal bad]
+    end
   end
 end

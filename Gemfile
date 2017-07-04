@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 ruby '2.4.0'
+gem 'aasm', '~> 4.12'
 
 group :development, :test do
   gem 'pry'
