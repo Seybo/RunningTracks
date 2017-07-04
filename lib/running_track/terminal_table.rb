@@ -9,7 +9,8 @@ module RunningTrack
     HEADINGS = %w[District Address Phone Wifi].freeze
 
     def print
-      puts printing_version
+      puts table
+      puts "#{@rows.count} tracks printed"
     end
 
     private
@@ -18,7 +19,7 @@ module RunningTrack
       @rows = tracks_list
     end
 
-    def printing_version
+    def table
       separators = Array.new(@rows.count - 1) { :separator }
       sep_rows   = @rows.zip(separators).flatten(1).compact
       Terminal::Table.new rows: sep_rows, headings: HEADINGS

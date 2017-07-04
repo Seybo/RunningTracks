@@ -50,4 +50,12 @@ RSpec.describe RunningTrack do # rubocop:disable Metrics/BlockLength
     # you should see it with your eyes
     subject.print(base_class.cache[:all_tracks])
   end
+
+  it 'saves and reads tracks data to/from YAML' do
+    build_tracks
+    subject.save(RunningTrack::Track.tracks_list)
+    loaded_tracks = subject.load
+    expect(loaded_tracks.size).to eq 4
+    expect(loaded_tracks[3]).to eq %w[e e2 1 yes]
+  end
 end

@@ -13,10 +13,10 @@ RSpec.describe RunningTrack::TerminalTable do
     expect(subject.rows).to eq(data)
   end
 
-  it 'creates version for printing' do
-    terminal_table = subject.send(:printing_version)
-    expect(terminal_table).to be_a_kind_of(Terminal::Table)
-    expect(terminal_table.rows.count).to eq(2)
-    expect(terminal_table.columns.count).to eq(4)
+  it 'creates table for printing' do
+    table = subject.send(:table)
+    expect(table).to be_a_kind_of(Terminal::Table)
+    expect(table.rows.count).to eq(2)
+    expect(table.columns.count).to eq(4)
   end
 end
