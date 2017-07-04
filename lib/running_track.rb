@@ -2,12 +2,12 @@ require 'pp'
 require 'active_support/all'
 require_relative 'running_track/base'
 require_relative 'running_track/data_source'
-require_relative 'running_track/table'
+require_relative 'running_track/terminal_table'
 require_relative 'running_track/track'
 
 module RunningTrack
   def self.print(data)
-    Table.new(data).print
+    TerminalTable.new(data).print
     pp "#{data.count} tracks printed"
   end
 

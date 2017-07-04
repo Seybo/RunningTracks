@@ -3,7 +3,9 @@ require 'active_support/core_ext/hash/slice'
 require 'terminal-table'
 
 module RunningTrack
-  class Table
+  class TerminalTable
+    attr_reader :rows
+
     HEADINGS = %w[District Address Phone Wifi].freeze
 
     def print
