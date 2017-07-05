@@ -12,3 +12,5 @@ group :development, :test do
   gem 'activesupport'
   gem 'terminal-table'
 end
+
+gem 'simplecov', require: false, group: :test

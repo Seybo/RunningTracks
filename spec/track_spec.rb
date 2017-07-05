@@ -30,6 +30,13 @@ RSpec.describe RunningTrack::Track do # rubocop:disable Metrics/BlockLength
     expect(default_track.to_a).to eq(['District', 'Address', 'Phone', 'Has WiFi'])
   end
 
+  it 'represents a track as a string' do
+    expect(default_track.to_s).to include("District: #{default_track.district}")
+    expect(default_track.to_s).to include("Address: #{default_track.address}")
+    expect(default_track.to_s).to include("Phone: #{default_track.phone}")
+    expect(default_track.to_s).to include("WiFi: #{default_track.has_wifi}")
+  end
+
   it 'represents a track as a hash' do
     hashed = {
       district: 'District',
@@ -54,11 +61,17 @@ RSpec.describe RunningTrack::Track do # rubocop:disable Metrics/BlockLength
     expect(last_track.has_wifi).to eq 'no'
   end
 
-  it 'performes search' do
+  it 'performes search with correct property' do
     track1
-    expect(described_class.find('district', 'District').count).to eq 0
+    expect(described_class.find_by('district', 'District').count).to eq 0
     track2
-    expect(described_class.find('district', 'new district').count).to eq 2
+    expect(described_class.find_by('district', 'new district').count).to eq 2
+  end
+
+  it 'returns error if search with INcorrect property' do
+    track1
+    error = 'No such property: not_a_property'
+    expect(described_class.find_by('not_a_property', 'search')).to eq error
   end
 
   it 'imports array of hashed tracks' do

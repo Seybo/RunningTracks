@@ -4,25 +4,24 @@ require 'terminal-table'
 
 module RunningTrack
   class TerminalTable
-    attr_reader :rows
-
-    HEADINGS = %w[District Address Phone Wifi].freeze
+    attr_reader :rows, :headings
 
     def print
-      puts table
-      puts "#{@rows.count} tracks printed"
+      puts terminal_table
+      puts "#{rows.count} rows printed"
     end
 
     private
 
-    def initialize(tracks_list)
-      @rows = tracks_list
+    def initialize(rows, headings)
+      @rows = rows
+      @headings = headings
     end
 
-    def table
-      separators = Array.new(@rows.count - 1) { :separator }
-      sep_rows   = @rows.zip(separators).flatten(1).compact
-      Terminal::Table.new rows: sep_rows, headings: HEADINGS
+    def terminal_table
+      separators = Array.new(rows.count - 1) { :separator }
+      sep_rows   = rows.zip(separators).flatten(1).compact
+      Terminal::Table.new rows: sep_rows, headings: headings
     end
   end
 end

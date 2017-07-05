@@ -3,8 +3,9 @@ require 'aasm'
 module RunningTrack
   class Track
     include AASM
+    PROPERTIES = %w[district address phone has_wifi].freeze
 
-    attr_reader :district, :address, :phone, :has_wifi
+    attr_reader(*PROPERTIES)
 
     @tracks_list = []
 
@@ -35,7 +36,7 @@ module RunningTrack
     end
 
     def to_a
-      [@district, @address, @phone, @has_wifi]
+      [district, address, phone, has_wifi]
     end
 
     def to_h
@@ -48,47 +49,41 @@ module RunningTrack
     end
 
     def to_s
-      "District: #{@disctrict}.
-       Addres: #{@address}.
-       Phone: #{@phone}.
-       Wi-fi available: #{@has_wifi}"
+      "District: #{district}.
+       Address: #{address}.
+       Phone: #{phone}.
+       WiFi: #{has_wifi}"
     end
 
     class << self
-      attr_reader :tracks_list
+      attr_accessor :tracks_list
 
-      def update_tracks(data)
+      def from_json(data)
         JSON.parse(data).map! do |row|
-          district = row['Cells']['District']
-          address = row['Cells']['Address']
-          phone = row['Cells']['HelpPhone']
-          has_wifi = row['Cells']['HasWifi']
-
-          Track.new(district, address, phone, has_wifi)
+          t = row['Cells']
+          Track.new(t['District'], t['Address'], t['HelpPhone'], t['HasWifi'])
         end
       end
 
       def import_tracks(tracks)
+        self.tracks_list = []
         tracks.each do |track|
-          Track.new(track[:district], track[:address], track[:phone], track[:has_wifi])
+          new(track[:district], track[:address], track[:phone], track[:has_wifi])
         end
       end
 
       def add_track(track)
-        @tracks_list << track
+        tracks_list << track
       end
 
-      def all
-        @tracks_list
-      end
-
-      def find(property, value)
-        @tracks_list.select { |track| track.send(property) == value }
+      def find_by(property, value)
+        return "No such property: #{property}" unless property.in?(PROPERTIES)
+        tracks_list.select { |track| track.public_send(property) == value }
       end
 
       def find_random(number)
-        return [] if number > @tracks_list.size || number < 1
-        @tracks_list.sample(number)
+        return [] if number > tracks_list.size || number < 1
+        tracks_list.sample(number)
       end
     end
   end

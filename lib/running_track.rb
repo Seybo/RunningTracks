@@ -6,8 +6,9 @@ require_relative 'running_track/track'
 require_relative 'running_track/file_storage'
 
 module RunningTrack
-  def self.print(data)
-    TerminalTable.new(data).print
+  def self.print(tracks_data)
+    column_names = %w[District Address Phone Wifi]
+    TerminalTable.new(tracks_data, column_names).print
   end
 
   def self.all
@@ -15,8 +16,8 @@ module RunningTrack
   end
 
   def self.find_by(property, value)
-    Base.fetch_data unless Base.cache[:all_tracks]
-    Track.find(property, value).map(&:to_a)
+    Base.tracks_data
+    Track.find_by(property, value).map(&:to_a)
   end
 
   def self.find_random(number)
@@ -28,6 +29,6 @@ module RunningTrack
   end
 
   def self.load
-    FileStorage.yaml_load
+    Track.import_tracks(FileStorage.yaml_load)
   end
 end
