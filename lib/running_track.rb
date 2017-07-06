@@ -8,7 +8,7 @@ require_relative 'running_track/file_storage'
 module RunningTrack
   def self.print(tracks_data)
     column_names = %w[District Address Phone Wifi]
-    TerminalTable.new(tracks_data, column_names).print
+    TerminalTable.new(rows: tracks_data, headings: column_names).print
   end
 
   def self.all
@@ -17,7 +17,7 @@ module RunningTrack
 
   def self.find_by(property, value)
     Base.tracks_data
-    Track.find_by(property, value).map(&:to_a)
+    Track.find_by(property: property, value: value).map(&:to_a)
   end
 
   def self.find_random(number)

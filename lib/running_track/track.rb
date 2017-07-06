@@ -26,11 +26,11 @@ module RunningTrack
       end
     end
 
-    def initialize(district, address, phone, has_wifi)
-      @district = district
-      @address = address
-      @phone = phone
-      @has_wifi = has_wifi
+    def initialize(args)
+      @district = args[:district]
+      @address = args[:address]
+      @phone = args[:phone]
+      @has_wifi = args[:has_wifi]
 
       self.class.add_track(self)
     end
@@ -61,14 +61,16 @@ module RunningTrack
       def from_json(data)
         JSON.parse(data).map! do |row|
           t = row['Cells']
-          Track.new(t['District'], t['Address'], t['HelpPhone'], t['HasWifi'])
+          new(district: t['District'], address: t['Address'],
+              phone: t['HelpPhone'], has_wifi: t['HasWifi'])
         end
       end
 
       def import_tracks(tracks)
         self.tracks_list = []
         tracks.each do |track|
-          new(track[:district], track[:address], track[:phone], track[:has_wifi])
+          new(district: track[:district], address: track[:address],
+              phone: track[:phone], has_wifi: track[:has_wifi])
         end
       end
 
@@ -76,7 +78,7 @@ module RunningTrack
         tracks_list << track
       end
 
-      def find_by(property, value)
+      def find_by(property:, value:)
         return "No such property: #{property}" unless property.in?(PROPERTIES)
         tracks_list.select { |track| track.public_send(property) == value }
       end

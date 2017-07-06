@@ -5,7 +5,7 @@ RSpec.describe RunningTrack::TerminalTable do
 
   let(:table) do
     column_names = %w[District Address Phone Wifi]
-    described_class.new(data, column_names)
+    described_class.new(rows: data, headings: column_names)
   end
 
   it 'initializes' do

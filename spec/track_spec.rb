@@ -63,15 +63,15 @@ RSpec.describe RunningTrack::Track do # rubocop:disable Metrics/BlockLength
 
   it 'performes search with correct property' do
     track1
-    expect(described_class.find_by('district', 'District').count).to eq 0
+    expect(described_class.find_by(property: 'district', value: 'District').count).to eq 0
     track2
-    expect(described_class.find_by('district', 'new district').count).to eq 2
+    expect(described_class.find_by(property: 'district', value: 'new district').count).to eq 2
   end
 
   it 'returns error if search with INcorrect property' do
     track1
     error = 'No such property: not_a_property'
-    expect(described_class.find_by('not_a_property', 'search')).to eq error
+    expect(described_class.find_by(property: 'not_a_property', value: 'search')).to eq error
   end
 
   it 'imports array of hashed tracks' do

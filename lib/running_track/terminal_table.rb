@@ -13,9 +13,9 @@ module RunningTrack
 
     private
 
-    def initialize(rows, headings)
-      @rows = rows
-      @headings = headings
+    def initialize(args)
+      @rows = args[:rows]
+      @headings = args[:headings]
     end
 
     def terminal_table

@@ -5,6 +5,9 @@ FactoryGirl.define do
     phone 'Phone'
     has_wifi 'Has WiFi'
 
-    initialize_with { new(district, address, phone, has_wifi) }
+    initialize_with do
+      new(district: district, address: address,
+          phone: phone, has_wifi: has_wifi)
+    end
   end
 end
