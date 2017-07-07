@@ -1,30 +1,14 @@
-require 'aasm'
+require_relative 'track/states'
 
 module RunningTrack
   class Track
-    include AASM
+    include States
+
     PROPERTIES = %w[district address phone has_wifi].freeze
 
     attr_reader(*PROPERTIES)
 
     @tracks_list = []
-
-    aasm do
-      state :unknown, initial: true
-      state :good, :normal, :bad
-
-      event :good do
-        transitions from: :unknown, to: :good
-      end
-
-      event :normal do
-        transitions from: :unknown, to: :normal
-      end
-
-      event :bad do
-        transitions from: :unknown, to: :bad
-      end
-    end
 
     def initialize(args)
       @district = args[:district]

@@ -7,7 +7,7 @@ module RunningTrack
     def self.tracks_data
       return cache[:all_tracks] if cache[:all_tracks]
       json_data = fetch_data
-      cache[:expiring_at] = DateTime.now + CACHE_EXPIRATION
+      cache[:expiring_at] = CACHE_EXPIRATION.from_now
       cache[:all_tracks] = parse_to_tracks_ary(json_data)
     end
 
