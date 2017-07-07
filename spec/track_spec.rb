@@ -11,17 +11,6 @@ RSpec.describe RunningTrack::Track do # rubocop:disable Metrics/BlockLength
 
   let(:track2) { build(:track, district: 'new district') }
 
-  let(:hashed_tracks) do
-    [{ district: '1a',
-       address: '2a',
-       phone: '3a',
-       has_wifi: '4a' },
-     { district: '1b',
-       address: '2b',
-       phone: '3b',
-       has_wifi: '4b' }]
-  end
-
   before(:each) do
     described_class.instance_variable_set(:@tracks_list, [])
   end
@@ -35,16 +24,6 @@ RSpec.describe RunningTrack::Track do # rubocop:disable Metrics/BlockLength
     expect(default_track.to_s).to include("Address: #{default_track.address}")
     expect(default_track.to_s).to include("Phone: #{default_track.phone}")
     expect(default_track.to_s).to include("WiFi: #{default_track.has_wifi}")
-  end
-
-  it 'represents a track as a hash' do
-    hashed = {
-      district: 'District',
-      address: 'Address',
-      phone: 'Phone',
-      has_wifi: 'Has WiFi'
-    }
-    expect(default_track.to_h).to eq(hashed)
   end
 
   it 'updates tracks_list' do
@@ -72,11 +51,6 @@ RSpec.describe RunningTrack::Track do # rubocop:disable Metrics/BlockLength
     track1
     error = 'No such property: not_a_property'
     expect(described_class.find_by(property: 'not_a_property', value: 'search')).to eq error
-  end
-
-  it 'imports array of hashed tracks' do
-    described_class.import_tracks(hashed_tracks)
-    expect(described_class.tracks_list.size).to eq hashed_tracks.size
   end
 
   context 'states' do

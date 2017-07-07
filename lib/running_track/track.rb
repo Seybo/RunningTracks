@@ -39,15 +39,6 @@ module RunningTrack
       [district, address, phone, has_wifi]
     end
 
-    def to_h
-      {
-        district: district,
-        address: address,
-        phone: phone,
-        has_wifi: has_wifi
-      }
-    end
-
     def to_s
       "District: #{district}.
        Address: #{address}.
@@ -63,14 +54,6 @@ module RunningTrack
           t = row['Cells']
           new(district: t['District'], address: t['Address'],
               phone: t['HelpPhone'], has_wifi: t['HasWifi'])
-        end
-      end
-
-      def import_tracks(tracks)
-        self.tracks_list = []
-        tracks.each do |track|
-          new(district: track[:district], address: track[:address],
-              phone: track[:phone], has_wifi: track[:has_wifi])
         end
       end
 

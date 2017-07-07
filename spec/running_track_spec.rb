@@ -58,7 +58,6 @@ RSpec.describe RunningTrack do # rubocop:disable Metrics/BlockLength
     described_class.save(RunningTrack::Track.tracks_list)
     described_class.load
     expect(described_class::Track.tracks_list.size).to eq 5
-    # The Track object itself is different but the track's data should be the same
-    expect(described_class::Track.tracks_list.last.to_a).to eq last_track.to_a
+    expect(described_class::Track.tracks_list.last).to eq last_track
   end
 end

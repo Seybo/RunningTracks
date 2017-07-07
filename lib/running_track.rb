@@ -29,6 +29,6 @@ module RunningTrack
   end
 
   def self.load
-    Track.import_tracks(FileStorage.yaml_load)
+    FileStorage.yaml_load
   end
 end
