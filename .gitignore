@@ -1,5 +1,4 @@
 tmp/
 coverage/
-test.rb
 .byebug_history
 config.reek
